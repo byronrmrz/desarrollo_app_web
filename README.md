@@ -4,9 +4,12 @@ Este proyecto es una aplicación web desarrollada con **React**, **Bootstrap** y
 
 ## 🚀 ¿Cómo ejecutar este proyecto?
 
+```markdown
 ### 1. Clona el repositorio
 
+```bash
 git clone https://github.com/byronrmrz/desarrollo_app_web.git
+```
 
 2. Ingresa a la carpeta del proyecto
 
