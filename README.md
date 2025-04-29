@@ -30,10 +30,5 @@ Tecnologías utilizadas
 	•	Bootstrap Icons
 	•	SASS
 
-
-Tecnologías utilizadas
-	•	React
-	•	React-Bootstrap
-	•	Bootstrap Icons
-	•	SASS
+	SASS
 
