@@ -1,15 +1,38 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './Item.scss';
+import { removeTodo, addTodo } from '../../reducers/todoSlice';
+import { useDispatch } from 'react-redux';
 
-function Item({title,text,buttonText = "Ir"}) {
+function Item(props) {
+  const removeItems = (e) => {
+    e.preventDefault();
+    dispatch(removeTodo(props.name))
+  };
+  const addItems = (e) => {
+    e.preventDefault();
+    dispatch(addTodo(props.name))
+  }
+  const dispatch = useDispatch();
   return (
-    <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
+    <Card >
       <Card.Body>
-        <Card.Title>{title}</Card.Title>
-        <Card.Text>{text}</Card.Text>
-        <Button variant="primary">{buttonText}</Button>
+        <Card.Title >{props.name}</Card.Title>
+        <Card.Text className="fw-bold">
+          Description
+        </Card.Text>
+        <Card.Text>
+        {props.description}        </Card.Text>
+        <Card.Text className="fw-bold">
+          Due Date
+        </Card.Text>
+        <Card.Text>
+           {props.dueDate}
+        </Card.Text>
+      </Card.Body>
+      <Card.Body>
+        <Button variant="info" >Editar</Button>
+        <Button variant="info" onClick={removeItems} >Eliminar</Button>
       </Card.Body>
     </Card>
   );

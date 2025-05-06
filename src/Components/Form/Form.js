@@ -1,30 +1,47 @@
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import "./Form.scss";
-import "bootstrap-icons/font/bootstrap-icons.css";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import './Form.scss'
+import { useSelector, useDispatch } from 'react-redux';
+import { useRef } from "react";
+import {
+  addTodo
+} from '../../reducers/todoSlice';
 
 function Formulario() {
-  return (
-    <Form>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Correo electrónico</Form.Label>
-        <Form.Control type="email" placeholder="Ingresa tu correo" />
-        <Form.Text className="text-muted">
-          Verifica tu correo que tenga el siguiente formato: correo@ejemplo.com
-        </Form.Text>
-      </Form.Group>
+  const dispatch = useDispatch();
+  const inputRefName = useRef();
+ const inputRefDescription = useRef();
+ const inputRefDueDate = useRef();
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="Ingresa tu contraseña" />
+  const addItem = (e) => {
+    e.preventDefault();
+    dispatch(addTodo({
+      'name': inputRefName.current.value,
+      'description': inputRefDescription.current.value,
+      'dueDate': inputRefDueDate.current.value,
+
+    }))
+  }
+
+  return (
+  <div className='space'>
+       <Form>
+      <Form.Group className="mb-3" controlId="formBasicName">
+        <Form.Label>Name</Form.Label>
+        <Form.Control type="text" placeholder="" ref={inputRefName}/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check type="checkbox" label="Mantener mi sesión abierta" />
+      <Form.Group className="mb-3" controlId="formBasicDescription">
+        <Form.Label>Description</Form.Label>
+        <Form.Control as="textarea" rows={3} ref={inputRefDescription} />
       </Form.Group>
-      <Button variant="primary" className="login-button">
-        Iniciar Sesión <i className="bi bi-person ms-2"></i>
-      </Button>
+      <Form.Group className="mb-3" controlId="formBasicDAte">
+        <Form.Label>Due Date</Form.Label>
+        <Form.Control type="date" ref={ inputRefDueDate }  />
+      </Form.Group>
+      <Button variant="info" onClick={addItem}>Add Goal</Button>
     </Form>
+  </div>
+ 
   );
 }
 

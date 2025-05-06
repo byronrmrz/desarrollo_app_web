@@ -1,3 +1,5 @@
+// import {TODOS } from './components/todos';
+// import {GOALS} from './components/goals';
 import logo from "./logo.svg";
 import "./App.scss";
 import Menu from "./Components/Menu/Menu";
@@ -7,8 +9,30 @@ import Container from "react-bootstrap/esm/Container";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/Row";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import AddingMobilebutton from "./Components/AddingMobileButton/AddingMobileButton";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo, initAddTodo } from "./reducers/todoSlice";
+// import './Components/todos'
 
 function App() {
+  const dispatch = useDispatch();
+  const todos = useSelector((state) => state.todo.value);
+  const arr = [
+    {
+      name: "caminar al perro 1",
+    },
+    {
+      name: "caminar al perro 2",
+    },
+  ];
+  useEffect(() => {
+    arr.map((item) => {
+      dispatch(initAddTodo(item));
+    });
+
+    // initFetch();
+  }, []);
   return (
     <div className="App">
       <Menu></Menu>
@@ -20,28 +44,16 @@ function App() {
             <Form></Form>
           </Col>
           <Col>
-            <Col>
-              <Item
-                title="Organiza tu Día"
-                text="Da el primer paso para alcanzar grandes resultados."
-              />
-              <Item
-                title="Planifica tu Éxito"
-                text="Cada meta comienza con una pequeña acción hoy"
-              />
-              <Item
-                title="Cumple tus Sueños"
-                text="No pongas límites a lo que puedes lograr."
-              />
-              <Item
-                title="Gestiona tu Tiempo"
-                text="Cada minuto cuenta. ¡Haz que valga la pena!"
-              />
-              <Item
-                title="Avanza con Propósito"
-                text="Tus metas son el mapa hacia tus sueños."
-              />
-            </Col>
+            <Row>
+              <div className="scrolling">
+                {todos.map((todo, index) => {
+                  return <Item key={index} 
+                  name={todo.name} 
+                  description={todo.description}
+                  dueDate = {todo.dueDate}  />;
+                })}
+              </div>
+            </Row>
           </Col>
         </Row>
       </Container>
