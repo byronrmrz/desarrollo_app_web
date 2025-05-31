@@ -22,7 +22,7 @@ npm install
 npm start
 ```
 
-El proyecto se abrirá automáticamente en tu navegador en http://localhost:3000.
+El proyecto se abrirá automáticamente en tu navegador en http://localhost:3001.
 
 Tecnologías utilizadas
 	•	React

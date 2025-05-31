@@ -1,62 +1,102 @@
-// import {TODOS } from './components/todos';
-// import {GOALS} from './components/goals';
-import logo from "./logo.svg";
-import "./App.scss";
-import Menu from "./Components/Menu/Menu";
-import Item from "./Components/Item/Item";
-import Form from "./Components/Form/Form";
-import Container from "react-bootstrap/esm/Container";
-import Col from "react-bootstrap/esm/Col";
-import Row from "react-bootstrap/Row";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import AddingMobilebutton from "./Components/AddingMobileButton/AddingMobileButton";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addTodo, initAddTodo } from "./reducers/todoSlice";
-// import './Components/todos'
+import './App.scss';
+import  Menu  from './Components/Menu/Menu'
+import FormTaskAndGoal from './Components/Form/Form';
+import Item from './Components/Item/Item';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import AddingMobileButton from './Components/AddingMobileButton/AddingMobileButton';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import {
+  initAddTodo,
+} from './reducers/todoSlice'
+import {initAddGoal,
+} from './reducers/goalsSlice'
 
 function App() {
+  const todos = useSelector((state) => state.todos.value);
+  const option = useSelector((state) => state.option.value);
+  const goals = useSelector((state) => state.goals.value);
   const dispatch = useDispatch();
-  const todos = useSelector((state) => state.todo.value);
-  const arr = [
-    {
-      name: "caminar al perro 1",
-    },
-    {
-      name: "caminar al perro 2",
-    },
-  ];
-  useEffect(() => {
-    arr.map((item) => {
-      dispatch(initAddTodo(item));
-    });
 
-    // initFetch();
+async function initFetch() {
+  try {
+    const [taskRes, goalRes] = await Promise.all([
+      fetch("http://localhost:4000/tasks/getTasks", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "13005169@br.gal",
+        },
+      }),
+      fetch("http://localhost:4000/goals/getGoals", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "13005169@br.gal",
+        },
+      }),
+    ]);
+
+    const [tasks, goals] = await Promise.all([taskRes.json(), goalRes.json()]);
+
+    tasks.forEach((task) => dispatch(initAddTodo(task)));
+    goals.forEach((goal) => dispatch(initAddGoal(goal)));
+
+  } catch (err) {
+    console.error("Error al obtener datos:", err);
+  }
+}
+  
+  useEffect(() => {
+    initFetch();
   }, []);
+
   return (
     <div className="App">
-      <Menu></Menu>
+      <Menu/>
+      {/*<Todos/> 
+      <Goals/>*/} 
 
       <Container>
-        <Row>
-          <h1>Control de Tareas</h1>
-          <Col>
-            <Form></Form>
-          </Col>
-          <Col>
-            <Row>
-              <div className="scrolling">
-                {todos.map((todo, index) => {
-                  return <Item key={index} 
-                  name={todo.name} 
-                  description={todo.description}
-                  dueDate = {todo.dueDate}  />;
-                })}
-              </div>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
+      <Row>
+        <Col xs={0} md={0}  className='d-none d-sm-block d-sm-none d-md-block '><FormTaskAndGoal/></Col>
+        <Col xs ={0}  sm ={0}>
+          <Row className='d-md-none'>
+            <div className='bg-transparent overlapping-div ' >
+              <AddingMobileButton className='float-left'/>
+            </div>
+          </Row>
+          <Row>
+          <div className='scrolling'>
+{option==='tasks' &&
+  todos.map((todo, index)=>(
+    <Item
+      key={index}
+      name={todo.name}
+      description={todo.description}
+      dueDate={todo.dueDate}
+      id={todo._id} 
+      type="task"   
+    />
+  ))
+}      
+{option==='goals' &&
+  goals.map((goal, index)=>(
+    <Item
+      key={index}
+      name={goal.name}
+      description={goal.description}
+      dueDate={goal.dueDate}
+      id={goal._id}      
+      type="goal"       
+    />
+  ))
+}    
+            </div>
+          </Row>
+        </Col>
+      </Row>
+    </Container>
     </div>
   );
 }

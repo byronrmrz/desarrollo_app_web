@@ -1,5 +1,5 @@
 $primary: #b0f5c1;
-$secondary: #be7feb;
+$secondary: #b5b3b6;
 
 .card{
     background-color: $primary;
@@ -7,4 +7,7 @@ $secondary: #be7feb;
 }
 .btn-info{
     background-color: $secondary;
+}
+.btn-info:hover{
+    background-color: gray;
 }
