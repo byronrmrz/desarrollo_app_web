@@ -37,7 +37,6 @@ function Item(props) {
         </Card.Text>
       </Card.Body>
       <Card.Body>
-        <Button variant="info" >Editar</Button>
         <Button variant="info" onClick={removeItems} >Eliminar</Button>
       </Card.Body>
     </Card>
