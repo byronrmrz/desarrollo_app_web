@@ -1,9 +1,9 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-// import NavDropdown from 'react-bootstrap/NavDropdown';
-import { useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { changeOption } from '../../reducers/optionSlice';
+import { FaTasks, FaBullseye } from 'react-icons/fa';
 
 import './Menu.scss';
 
@@ -11,23 +11,31 @@ function Menu() {
   const option = useSelector((state) => state.option.value);
   const dispatch = useDispatch();
 
-  const changeOptionFunction = (e) => {
-    e.preventDefault();
-    if(option==='tasks')
-      dispatch(changeOption('goals'));
-    else
-      dispatch(changeOption('tasks'));
+  const handleChange = (newOption) => {
+    if (option !== newOption) {
+      dispatch(changeOption(newOption));
     }
+  };
 
   return (
-    <Navbar expand="lg" className="navbar navbar-dark bg-dark">
+    <Navbar expand="lg" className="custom-navbar">
       <Container>
-        <Navbar.Brand>Proyecto Desarrollo de Aplicaciones Web</Navbar.Brand>
+        <Navbar.Brand className="brand-title">Proyecto Web</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse >
-          <Nav defaultActiveKey={option} >
-            <Nav.Link eventKey= 'tasks' onClick={changeOptionFunction}>Tasks </Nav.Link>
-            <Nav.Link eventKey= 'goals' onClick={changeOptionFunction}>Goals </Nav.Link>
+        <Navbar.Collapse>
+          <Nav className="ml-auto nav-links">
+            <Nav.Link
+              className={`nav-item ${option === 'tasks' ? 'active' : ''}`}
+              onClick={() => handleChange('tasks')}
+            >
+              <FaTasks className="icon" /> Tareas
+            </Nav.Link>
+            <Nav.Link
+              className={`nav-item ${option === 'goals' ? 'active' : ''}`}
+              onClick={() => handleChange('goals')}
+            >
+              <FaBullseye className="icon" /> Metas
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
